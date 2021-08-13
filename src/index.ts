@@ -1,5 +1,6 @@
 import {
   BoxGeometry,
+  Frustum,
   Mesh,
   MeshNormalMaterial,
   PerspectiveCamera,
@@ -7,20 +8,23 @@ import {
   WebGLRenderer,
 } from "three";
 
+const random = (min = -1, max = 1) => min + Math.random() * (max - min);
+
 const buildCube = () => {
-  const depth = 1 + Math.random() * 10;
-  const xOffset = Math.random() * 4;
-  const spinSpeed = 0.005 + Math.random() * 0.01;
+  const depth = random(1, 10) ** 2;
+  const height = random(0.7, 1.05) ** 10;
   const mesh = new Mesh(
-    new BoxGeometry(0.2, 0.2, 0.2),
+    new BoxGeometry(random(0.1, 0.3), height, random(0.1, 0.3)),
     new MeshNormalMaterial()
   );
+  mesh.position.x = random(-depth, depth);
+  mesh.position.y = height / 2;
   mesh.position.z = -depth;
-  mesh.position.y = -0.5;
-  const update = (time: number) => {
-    mesh.rotation.x += spinSpeed;
-    mesh.rotation.y += spinSpeed;
-    mesh.position.x = 2 - ((time / 1000 + xOffset) % 4);
+  const update = (time: number, frustum: Frustum) => {
+    mesh.position.x += -(time / 1000);
+    if (mesh.position.x < 0 && !frustum.intersectsObject(mesh)) {
+      mesh.position.x *= -1;
+    }
   };
   return { mesh, update };
 };
@@ -28,22 +32,29 @@ const buildCube = () => {
 const buildCubes = (count: number) => new Array(count).fill(0).map(buildCube);
 
 const camera = new PerspectiveCamera(
-  70,
+  50,
   window.innerWidth / window.innerHeight,
   0.01,
   1000
 );
+camera.position.y = 1;
+
+const frustum = new Frustum();
+frustum.setFromProjectionMatrix(camera.projectionMatrix);
 
 const scene = new Scene();
 
-const cubes = buildCubes(30);
+const cubes = buildCubes(2000);
 cubes.forEach((cube) => scene.add(cube.mesh));
 
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+let previousTime = 0;
 renderer.setAnimationLoop((time) => {
-  cubes.forEach((cube) => cube.update(time));
+  const deltaTime = time - previousTime;
+  cubes.forEach((cube) => cube.update(deltaTime, frustum));
 
   renderer.render(scene, camera);
+  previousTime = time;
 });
 document.body.appendChild(renderer.domElement);
