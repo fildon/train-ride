@@ -31,7 +31,13 @@
         top: calc(50vh - var(--img-width) / 1.3);
       }
       #ground {
-        background-color: hsl(240, 100%, 70%);
+        --foreground: hsl(240, 100%, 5%);
+        --background: hsl(350, 80%, 55%);
+        background: linear-gradient(
+          180deg,
+          var(--background) 0%,
+          var(--foreground) 80%
+        );
         height: 49vh;
         width: 100vw;
       }

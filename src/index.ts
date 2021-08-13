@@ -1,9 +1,10 @@
 import {
   BoxGeometry,
+  FogExp2,
   Frustum,
   Line3,
   Mesh,
-  MeshNormalMaterial,
+  MeshPhongMaterial,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -29,7 +30,7 @@ const buildCube = (frustum: Frustum) => {
   const width = random(0.1, 0.3);
   const mesh = new Mesh(
     new BoxGeometry(width, height, random(0.1, 0.3)),
-    new MeshNormalMaterial()
+    new MeshPhongMaterial()
   );
   const xWidth = frustumWidthAtDepth(frustum, depth) + 2 * width;
   mesh.position.x = random(-xWidth / 2, xWidth / 2);
@@ -52,7 +53,7 @@ const camera = new PerspectiveCamera(
   50,
   window.innerWidth / window.innerHeight,
   0.01,
-  1000
+  200
 );
 camera.position.y = 1;
 
@@ -60,8 +61,9 @@ const frustum = new Frustum();
 frustum.setFromProjectionMatrix(camera.projectionMatrix);
 
 const scene = new Scene();
+scene.fog = new FogExp2("hsl(350, 100%, 65%)", 0.1);
 
-const cubes = buildCubes(2000, frustum);
+const cubes = buildCubes(2500, frustum);
 cubes.forEach((cube) => scene.add(cube.mesh));
 
 const renderer = new WebGLRenderer({ antialias: true, alpha: true });
