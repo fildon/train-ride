@@ -57,4 +57,14 @@ renderer.setAnimationLoop((time) => {
   renderer.render(scene, camera);
   previousTime = time;
 });
+
+const onWindowResize = () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  frustum.setFromProjectionMatrix(camera.projectionMatrix);
+};
+
+window.addEventListener("resize", onWindowResize);
 document.body.appendChild(renderer.domElement);
