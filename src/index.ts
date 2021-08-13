@@ -11,8 +11,8 @@ import {
 const random = (min = -1, max = 1) => min + Math.random() * (max - min);
 
 const buildCube = () => {
-  const depth = random(1, 10) ** 2;
-  const height = random(0.7, 1.05) ** 10;
+  const depth = random(1.5, 10) ** 2;
+  const height = random(0.8, 1.05) ** 10;
   const mesh = new Mesh(
     new BoxGeometry(random(0.1, 0.3), height, random(0.1, 0.3)),
     new MeshNormalMaterial()
@@ -47,7 +47,7 @@ const scene = new Scene();
 const cubes = buildCubes(2000);
 cubes.forEach((cube) => scene.add(cube.mesh));
 
-const renderer = new WebGLRenderer({ antialias: true });
+const renderer = new WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 let previousTime = 0;
 renderer.setAnimationLoop((time) => {

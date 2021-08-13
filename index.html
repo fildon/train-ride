@@ -6,8 +6,36 @@
       body {
         margin: 0;
       }
+      canvas {
+        position: absolute;
+        top: 0;
+      }
+      #sky {
+        background-color: hsl(233, 55%, 11%);
+        height: 51vh;
+        width: 100vw;
+        overflow: hidden;
+        position: relative;
+      }
+      #sunset {
+        --img-width: 400px;
+        position: absolute;
+        width: var(--img-width);
+        left: calc(50vw - var(--img-width) / 2);
+        top: calc(50vh - var(--img-width) / 1.3);
+      }
+      #ground {
+        background-color: hsl(240, 100%, 70%);
+        height: 49vh;
+        width: 100vw;
+      }
     </style>
   </head>
-  <body></body>
+  <body>
+    <div id="sky">
+      <img id="sunset" src="sunset.png" />
+    </div>
+    <div id="ground"></div>
+  </body>
   <script src="dist/index.js"></script>
 </html>
