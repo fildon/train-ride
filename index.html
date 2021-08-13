@@ -11,7 +11,13 @@
         top: 0;
       }
       #sky {
-        background-color: hsl(233, 55%, 11%);
+        --sky-purple: hsl(233, 55%, 11%);
+        --sky-pink: hsl(10, 100%, 65%);
+        background: linear-gradient(
+          0deg,
+          var(--sky-pink) 0%,
+          var(--sky-purple) 25%
+        );
         height: 51vh;
         width: 100vw;
         overflow: hidden;
