@@ -1,53 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>🚄Train Ride</title>
-    <style>
-      body {
-        margin: 0;
-      }
-      canvas {
-        position: absolute;
-        top: 0;
-      }
-      #sky {
-        --sky-purple: hsl(233, 55%, 11%);
-        --sky-pink: hsl(10, 100%, 65%);
-        background: linear-gradient(
-          0deg,
+
+<head>
+  <title>🚄Train Ride</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+    }
+
+    #sky {
+      --sky-purple: hsl(233, 55%, 11%);
+      --sky-pink: hsl(10, 100%, 65%);
+      background: linear-gradient(0deg,
           var(--sky-pink) 0%,
-          var(--sky-purple) 25%
-        );
-        height: 51vh;
-        width: 100vw;
-        overflow: hidden;
-        position: relative;
-      }
-      #sunset {
-        --img-width: 400px;
-        position: absolute;
-        width: var(--img-width);
-        left: calc(50vw - var(--img-width) / 2);
-        top: calc(50vh - var(--img-width) / 1.3);
-      }
-      #ground {
-        --foreground: hsl(240, 100%, 5%);
-        --background: hsl(350, 80%, 55%);
-        background: linear-gradient(
-          180deg,
+          var(--sky-purple) 25%);
+      height: 51vh;
+      width: 100vw;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #sunset {
+      --img-width: 400px;
+      position: absolute;
+      width: var(--img-width);
+      left: calc(50vw - var(--img-width) / 2);
+      top: calc(50vh - var(--img-width) / 1.3);
+    }
+
+    #ground {
+      --foreground: hsl(240, 100%, 5%);
+      --background: hsl(350, 80%, 55%);
+      background: linear-gradient(180deg,
           var(--background) 0%,
-          var(--foreground) 80%
-        );
-        height: 49vh;
-        width: 100vw;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="sky">
-      <img id="sunset" src="sunset.png" />
-    </div>
-    <div id="ground"></div>
-  </body>
-  <script src="dist/index.js"></script>
+          var(--foreground) 80%);
+      height: 49vh;
+      width: 100vw;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sky">
+    <img id="sunset" src="sunset.png" />
+  </div>
+  <div id="ground"></div>
+</body>
+<script src="dist/index.js"></script>
+
 </html>
