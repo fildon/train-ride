@@ -42,6 +42,15 @@
       height: 49vh;
       width: 100vw;
     }
+
+    #music {
+      position: absolute;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      opacity: 0.0;
+    }
   </style>
 </head>
 
@@ -50,7 +59,16 @@
     <img id="sunset" src="sunset.png" />
   </div>
   <div id="ground"></div>
+  <iframe id="music" type="text/html"
+    src="https://www.youtube.com/embed/DWcJFNfaw9c?autoplay=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0&enablejsapi=1"
+    frameborder="0"></iframe>
 </body>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  window.onYouTubeIframeAPIReady = () => {
+    new YT.Player('music', { events: { onReady(e) { e.target.setVolume(10) } } })
+  }
+</script>
 <script src="dist/index.js"></script>
 
 </html>
