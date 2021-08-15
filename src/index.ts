@@ -31,7 +31,9 @@ const createBoxGeometry = () =>
     randomBetween(0.1, 0.3)
   );
 
-const buildCube = (frustum: Frustum) => {
+type Cube = { mesh: Mesh; update: (time: number, frustum: Frustum) => void };
+
+const buildCube = (frustum: Frustum): Cube => {
   const box = createBoxGeometry();
   const depth = randomBetween(1.5, 10) ** 2;
   const mesh = new Mesh(box, new MeshPhongMaterial());
@@ -76,11 +78,39 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 let previousTime = 0;
 renderer.setAnimationLoop((time) => {
   const deltaTime = time - previousTime;
+  cullCubes(time, deltaTime, () => buildCube(frustum));
   cubes.forEach((cube) => cube.update(deltaTime, frustum));
 
   renderer.render(scene, camera);
   previousTime = time;
 });
+
+const targetFrameTime = 1000 / 25; // 25fps or better
+const wiggle = 0.1; // Aim to be within 10% of target FPS
+let rollingAverage = targetFrameTime;
+const frameWeight = 0.2;
+const loadingGracePeriod = 10000; // 10s to load stuff in before we start culling
+const cullCubes = (time: number, deltaTime: number, newCube: () => Cube) => {
+  if (time < loadingGracePeriod) return;
+
+  rollingAverage = (1 - frameWeight) * rollingAverage + frameWeight * deltaTime;
+  if (rollingAverage > targetFrameTime * (1 - wiggle)) {
+    const culled = cubes.pop();
+    culled?.mesh.removeFromParent();
+    if (!(cubes.length % 100)) {
+      console.log("downsizing", cubes.length, 1000 / rollingAverage);
+    }
+  } else if (
+    rollingAverage < targetFrameTime * (1 + wiggle) &&
+    cubes.length < 2500
+  ) {
+    cubes.push(newCube());
+
+    if (!(cubes.length % 100)) {
+      console.log("upsizing", cubes.length, 1000 / rollingAverage);
+    }
+  }
+};
 
 const onWindowResize = () => {
   camera.aspect = window.innerWidth / window.innerHeight;
