@@ -9,7 +9,10 @@
   "license": "ISC",
   "author": "Rupert Foggo McKay <maxfmckay@gmail.com> (https://fildon.me)",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --minify --outfile=dist/index.js"
+    "clean": "rm -rf dist",
+    "build:js": "esbuild src/index.ts --bundle --minify --outfile=dist/index.js",
+    "build:static": "cp -RT static ./dist",
+    "build": "npm run clean && npm run build:js && npm run build:static"
   },
   "dependencies": {
     "@types/three": "^0.131.0",
